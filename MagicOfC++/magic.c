@@ -5,6 +5,8 @@ struct Color {
     uint8_t r, g, b, a;
 };
 
+typedef struct Color Color;
+
 void PrintIntColor(uint32_t);
 void PrintColor(Color*);
 
