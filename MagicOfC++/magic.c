@@ -8,7 +8,7 @@ struct Color {
 typedef struct Color Color;
 
 void PrintIntColor(uint32_t);
-void PrintColor(Color*);
+void PrintColor(Color const*);
 
 int main(void)
 {
@@ -49,7 +49,7 @@ void PrintIntColor(uint32_t color)
     printf("0x%08X\n", color);
 }
 
-void PrintColor(Color* color)
+void PrintColor(Color const* color)
 {
     printf("Color struct:____________________________________\n");
     printf("0x%02X%02X%02X%02X\n", (*color).a, (*color).b, (*color).g, (*color).r);
