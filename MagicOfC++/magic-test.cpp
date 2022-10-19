@@ -20,12 +20,12 @@ int main(void)
     TimeChrono starttime, endtime;
 
     std::cout << "C++ language style:" << std::endl << std::endl;
-    std::cout << "Using pointer casting method with " << N << " tries" << std::endl;
+    std::cout << "Using reinterpret_cast method with " << N << " tries" << std::endl;
     starttime = std::chrono::high_resolution_clock().now();
     for (uint64_t i = 0; i < N; i++)
     {
-        Color* color = (Color*)(&colorInt);
-        (*color).g = 0xD4;
+        Color& color = *reinterpret_cast<Color*>(&colorInt);
+        color.g = 0xD4;
     }
     endtime = std::chrono::high_resolution_clock().now();
 
@@ -58,54 +58,54 @@ int main(void)
 /// 
 /// Results in debug mode x64:_________________________________________________________________________________________________________
 /// 
-/// Using pointer casting method with 7000000000 tries
+/// Using reinterpret_cast method with 7000000000 tries
 /// Color integer : ___________________________________
 /// 0xFF05D485
-/// Took : 10474ms
+/// Took : 11681ms
 /// 
 /// Using bitwise operations method with 7000000000 tries
 /// Color integer : ___________________________________
 /// 0xFF64D485
-/// Took : 15558ms
+/// Took : 15515ms
 /// 
 /// 
 /// Results in debug mode x86:_________________________________________________________________________________________________________
 /// 
-/// Using pointer casting method with 7000000000 tries
+/// Using reinterpret_cast method with 7000000000 tries
 /// Color integer : ___________________________________
 /// 0xFF05D485
-/// Took : 7191ms
+/// Took : 7297ms
 /// 
 /// Using bitwise operations method with 7000000000 tries
 /// Color integer : ___________________________________
 /// 0xFF64D485
-/// Took : 6190ms
+/// Took : 6298ms
 /// 
 /// 
 /// Results in release mode x64:_______________________________________________________________________________________________________
 /// 
-/// Using pointer casting method with 7000000000 tries
+/// Using reinterpret_cast method with 7000000000 tries
 /// Color integer : ___________________________________
 /// 0xFF05D485
-/// Took : 1906ms
+/// Took : 1916ms
 /// 
 /// Using bitwise operations method with 7000000000 tries
 /// Color integer : ___________________________________
 /// 0xFF64D485
-/// Took : 3448ms
+/// Took : 3445ms
 /// 
 /// 
 /// Results in release mode x86:_______________________________________________________________________________________________________
 /// 
-/// Using pointer casting method with 7000000000 tries
+/// Using reinterpret_cast method with 7000000000 tries
 /// Color integer : ___________________________________
 /// 0xFF05D485
-/// Took : 2896ms
+/// Took : 2895ms
 /// 
 /// Using bitwise operations method with 7000000000 tries
 /// Color integer : ___________________________________
 /// 0xFF64D485
-/// Took : 3466ms
+/// Took : 3473ms
 
 void PrintIntColor(uint32_t color)
 {
