@@ -1,4 +1,3 @@
-#include <cstdint>
 #include <iostream>
 #include <iomanip>
 
@@ -11,7 +10,7 @@ void PrintColor(const Color&);
 
 int main(void)
 {
-    uint32_t colorInt = 0x0F05E785;
+    uint32_t colorInt = 0xFF05E785;
 
     Color& color = *reinterpret_cast<Color*>(&colorInt);
 
@@ -43,17 +42,18 @@ int main(void)
 
 void PrintIntColor(uint32_t color)
 {
-    std::cout << "Color integer:___________________________________" << std::endl;
-    std::cout << "0x" << std::uppercase << std::hex << std::setw(8) << std::setfill('0');
-    std::cout << color << std::endl;
+    using namespace std;
+    cout << "Color integer:___________________________________" << endl;
+    cout << "0x" << uppercase << hex << setw(8) << setfill('0') << color << endl;
 }
 
 void PrintColor(const Color& color)
 {
-    std::cout << "Color struct:____________________________________" << std::endl;
-    std::cout << "0x" << std::uppercase << std::hex << std::setw(2) << std::setfill('0');
-    std::cout << std::setw(2) << std::setfill('0') << static_cast<uint16_t>(color.a);
-    std::cout << std::setw(2) << std::setfill('0') << static_cast<uint16_t>(color.b);
-    std::cout << std::setw(2) << std::setfill('0') << static_cast<uint16_t>(color.g);
-    std::cout << std::setw(2) << std::setfill('0') << static_cast<uint16_t>(color.r) << std::endl;
+    using namespace std;
+    cout << "Color struct:____________________________________" << endl;
+    cout << "0x" << uppercase << hex << setw(2) << setfill('0');
+    cout << setw(2) << setfill('0') << static_cast<uint16_t>(color.a);
+    cout << setw(2) << setfill('0') << static_cast<uint16_t>(color.b);
+    cout << setw(2) << setfill('0') << static_cast<uint16_t>(color.g);
+    cout << setw(2) << setfill('0') << static_cast<uint16_t>(color.r) << endl;
 }

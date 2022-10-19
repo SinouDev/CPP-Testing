@@ -23,7 +23,7 @@ int main(void)
     PrintIntColor(colorInt);
     PrintColor(color);
     
-    printf("\nsetting green channel to 0xD4 using reinterpret_cast method:\n");
+    printf("\nsetting green channel to 0xD4 using C pointer casting manipelation method:\n");
     
     (*color).g = 0xD4;
 
