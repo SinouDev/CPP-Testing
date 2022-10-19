@@ -1,58 +1,56 @@
-#include <stdio.h>
-#include <stdint.h>
-#include <time.h>
-#include <inttypes.h>
+#include <iostream>
+#include <iomanip>
+#include <chrono>
 
 struct Color {
     uint8_t r, g, b, a;
 };
 
-typedef struct Color Color;
+using TimeChrono = std::chrono::time_point<std::chrono::high_resolution_clock>;
 
 void PrintIntColor(uint32_t);
-int64_t GetDuration(struct timespec, struct timespec);
+int64_t GetDuration(TimeChrono, TimeChrono);
 
-const uint64_t N = 7000000000;
-
-
+#define N 7000000000
 
 int main(void)
 {
     uint32_t colorInt = 0xFF05E785;
 
-    struct timespec starttime, endtime;
+    TimeChrono starttime, endtime;
 
-    printf("C language style:\n\n");
-    printf("Using pointer casting method with %llu tries\n", N);
-    timespec_get(&starttime, TIME_UTC);
+    std::cout << "C++ language style:" << std::endl << std::endl;
+    std::cout << "Using pointer casting method with " << N << " tries" << std::endl;
+    starttime = std::chrono::high_resolution_clock().now();
     for (uint64_t i = 0; i < N; i++)
     {
         Color* color = (Color*)(&colorInt);
         (*color).g = 0xD4;
     }
-    timespec_get(&endtime, TIME_UTC);
+    endtime = std::chrono::high_resolution_clock().now();
 
     PrintIntColor(colorInt);
-    printf("Took: %" PRId64 "ms\n", GetDuration(starttime, endtime));
+    std::cout << "Took: " << GetDuration(starttime, endtime) << "ms" << std::endl;
 
-    printf("\nUsing bitwise operations method with %llu tries\n", N);
-    timespec_get(&starttime, TIME_UTC);
+    std::cout << std::endl;
+    std::cout << "Using bitwise operations method with " << N << " tries" << std::endl;
+    starttime = std::chrono::high_resolution_clock().now();
     for (uint64_t i = 0; i < N; i++)
     {
         colorInt = (colorInt & ~(0xFF << 16)) | (0x64 << 16);
     }
-    timespec_get(&endtime, TIME_UTC);
+    endtime = std::chrono::high_resolution_clock().now();
 
     PrintIntColor(colorInt);
-    printf("Took: %" PRId64 "ms\n", GetDuration(starttime, endtime));
+    std::cout << "Took: " << GetDuration(starttime, endtime) << "ms" << std::endl;
 
-    printf("\nPress ENTER to exit!");
-    getchar();
-
+    std::cout << std::endl;
+    std::cout << "Press ENTER to exit!";
+    std::cin.get();
     return 0;
 }
 
-/// C language style:
+/// C++ language style:
 /// 
 /// 
 /// Results are copied from the console log.
@@ -63,12 +61,12 @@ int main(void)
 /// Using pointer casting method with 7000000000 tries
 /// Color integer : ___________________________________
 /// 0xFF05D485
-/// Took : 10821ms
+/// Took : 10474ms
 /// 
 /// Using bitwise operations method with 7000000000 tries
 /// Color integer : ___________________________________
 /// 0xFF64D485
-/// Took : 15462ms
+/// Took : 15558ms
 /// 
 /// 
 /// Results in debug mode x86:_________________________________________________________________________________________________________
@@ -76,12 +74,12 @@ int main(void)
 /// Using pointer casting method with 7000000000 tries
 /// Color integer : ___________________________________
 /// 0xFF05D485
-/// Took : 7662ms
+/// Took : 7191ms
 /// 
 /// Using bitwise operations method with 7000000000 tries
 /// Color integer : ___________________________________
 /// 0xFF64D485
-/// Took : 6869ms
+/// Took : 6190ms
 /// 
 /// 
 /// Results in release mode x64:_______________________________________________________________________________________________________
@@ -89,33 +87,35 @@ int main(void)
 /// Using pointer casting method with 7000000000 tries
 /// Color integer : ___________________________________
 /// 0xFF05D485
-/// Took : 1882ms
+/// Took : 1906ms
 /// 
 /// Using bitwise operations method with 7000000000 tries
 /// Color integer : ___________________________________
 /// 0xFF64D485
-/// Took : 3447ms
+/// Took : 3448ms
 /// 
 /// 
 /// Results in release mode x86:_______________________________________________________________________________________________________
-///
-///  Using pointer casting method with 7000000000 tries
+/// 
+/// Using pointer casting method with 7000000000 tries
 /// Color integer : ___________________________________
 /// 0xFF05D485
-/// Took : 2900ms
+/// Took : 2896ms
 /// 
 /// Using bitwise operations method with 7000000000 tries
 /// Color integer : ___________________________________
 /// 0xFF64D485
-/// Took : 3453ms
+/// Took : 3466ms
 
 void PrintIntColor(uint32_t color)
 {
-    printf("Color integer:___________________________________\n");
-    printf("0x%08X\n", color);
+    using namespace std;
+    cout << "Color integer:___________________________________" << endl;
+    cout << "0x" << uppercase << hex << setw(8) << setfill('0') << color << endl;
+    cout << nouppercase << dec;
 }
 
-int64_t GetDuration(struct timespec start, struct timespec end)
+int64_t GetDuration(TimeChrono start, TimeChrono end)
 {
-    return ((int64_t)(end.tv_sec - start.tv_sec)) * 1000 + ((int64_t)(end.tv_nsec - start.tv_nsec)) / 1000000;
+    return static_cast<int64_t>(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() * 0.001f * 0.001f);
 }

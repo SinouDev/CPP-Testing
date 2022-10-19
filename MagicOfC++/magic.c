@@ -37,6 +37,8 @@ int main(void)
     PrintIntColor(colorInt);
     PrintColor(color);
     
+    printf("\nPress ENTER to exit!");
+    getchar();
 
     return 0;
 }

@@ -36,6 +36,9 @@ int main(void)
     PrintIntColor(colorInt);
     PrintColor(color);
     
+    std::cout << std::endl;
+    std::cout << "Press ENTER to exit!";
+    std::cin.get();
 
     return 0;
 }
